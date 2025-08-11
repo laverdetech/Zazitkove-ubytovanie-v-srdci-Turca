@@ -1,0 +1,1548 @@
+Put your HTML text here!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podnikateľský Zámer: Zážitkové Ubytovanie v Martine</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-dark: #1a202c;
+            --bg-card: #2d3748;
+            --border-color: #4a5568;
+            --text-primary: #e2e8f0;
+            --text-secondary: #a0aec0;
+            --accent-primary: #dd6b20; /* Warm Orange */
+            --accent-secondary: #f6ad55; /* Lighter Orange */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .section-title {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 800; /* font-extrabold */
+            color: var(--text-primary);
+            margin-bottom: 1.5rem; /* mb-6 */
+            border-bottom: 2px solid var(--accent-primary);
+            padding-bottom: 0.75rem; /* pb-3 */
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 1rem; /* rounded-2xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            padding: 2rem; /* p-8 */
+            margin-bottom: 2rem; /* mb-8 */
+            border: 1px solid var(--border-color);
+        }
+        .collapsible-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            transition: color 0.3s ease;
+        }
+        .collapsible-header:hover {
+            color: var(--accent-secondary);
+        }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding-top 0.5s ease-out;
+            padding-top: 0;
+        }
+        .collapsible-content.open {
+            max-height: 5000px; /* Increased max-height */
+            padding-top: 1.5rem;
+        }
+        .arrow-icon {
+            transition: transform 0.3s ease-out;
+        }
+        .collapsible-header.open .arrow-icon {
+            transform: rotate(90deg);
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 1.5rem;
+            align-self: flex-start;
+            max-height: calc(100vh - 3rem);
+            overflow-y: auto;
+            background-color: var(--bg-card);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .nav-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+        .nav-link:hover {
+            background-color: rgba(221, 107, 32, 0.1);
+            color: var(--accent-secondary);
+        }
+        .nav-link.active {
+            background-color: var(--accent-primary);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 4px 6px rgba(221, 107, 32, 0.2);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #1a202c;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        td ul {
+            padding-left: 1rem;
+            margin: 0;
+        }
+        td ul li {
+            margin-bottom: 0.25rem;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(221, 107, 32, 0.3);
+        }
+        .result-box {
+            background-color: rgba(246, 173, 85, 0.05);
+            border: 1px solid var(--accent-primary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .result-box p {
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+        .result-box p strong {
+            color: var(--accent-secondary);
+            font-weight: 700;
+        }
+        .header-bg {
+            background-image: linear-gradient(rgba(26, 32, 44, 0.7), rgba(26, 32, 44, 0.9)), url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjVjNTN8MHwxfHNlYXJjaHwxfHxhZHZlbnR1cmUlMjBjYWJpbiUyMG5pZ2h0fGVufDB8fHx8MTY5MDc4NTI4OA&ixlib=rb-4.0.3&q=80&w=1200');
+            background-size: cover;
+            background-position: center;
+            padding: 6rem 2rem;
+            border-radius: 1rem;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+            text-align: left;
+        }
+        .header-bg h1 {
+            font-size: 3.75rem;
+            font-weight: 800;
+            color: white;
+        }
+        .header-bg p {
+            color: var(--text-primary);
+        }
+        /* Timeline styles */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding: 1rem 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--border-color);
+            border-radius: 2px;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2.5rem;
+            position: relative;
+            padding-left: 3rem;
+        }
+        .timeline-item-content {
+            background-color: var(--bg-dark);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            flex: 1;
+        }
+        .timeline-item-point {
+            position: absolute;
+            left: 0;
+            top: 0.25rem;
+            width: 2.25rem;
+            height: 2.25rem;
+            background-color: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.125rem;
+            z-index: 1;
+            box-shadow: 0 0 0 4px var(--bg-dark);
+        }
+        .timeline-item-title {
+            font-weight: 700;
+            color: var(--accent-secondary);
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+        .sub-section-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+            gap: 0.75rem;
+        }
+        .highlight-box {
+            background-color: rgba(45, 55, 72, 0.5);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin: 1.5rem 0;
+        }
+        .highlight-box h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-secondary);
+            margin-bottom: 0.75rem;
+        }
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .type-item {
+            background-color: var(--bg-dark);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .type-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(221, 107, 32, 0.1);
+            border-color: var(--accent-primary);
+        }
+        .type-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-primary);
+        }
+        .type-item strong {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .type-item p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        ul.list-disc, ol.list-decimal {
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+        ul.list-disc li, ol.list-decimal li {
+            margin-bottom: 0.5rem;
+        }
+        .icon-svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            stroke-width: 2;
+        }
+        .header-icon-svg {
+            width: 2.25rem;
+            height: 2.25rem;
+            stroke-width: 2;
+        }
+        .text-red-500 {
+            color: #f87171;
+        }
+        .text-green-500 {
+            color: #4ade80;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 flex flex-col lg:flex-row gap-8">
+        <!-- Navigácia (Sticky Sidebar) -->
+        <nav class="w-full lg:w-1/4 sticky-nav">
+            <h2 class="section-title !text-2xl !pb-2 !mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-svg text-accent-primary"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m13 14-4-4 6-6"></path></svg>
+                Obsah
+            </h2>
+            <ul>
+                <li><a href="#uvod" class="nav-link" data-section="uvod">1. Úvod a Zhrnutie</a></li>
+                <li><a href="#koncept" class="nav-link" data-section="koncept">2. Koncept Ubytovania</a></li>
+                <li><a href="#lokalita" class="nav-link" data-section="lokalita">3. Lokalita a Pozemok</a></li>
+                <li><a href="#realizacia" class="nav-link" data-section="realizacia">4. Realizácia Zariadenia</a></li>
+                <li><a href="#povolenia" class="nav-link" data-section="povolenia">5. Povolenia a Právo</a></li>
+                <li><a href="#marketing" class="nav-link" data-section="marketing">6. Marketing a Predaj</a></li>
+                <li><a href="#casova-os" class="nav-link" data-section="casova-os">7. Časová Os</a></li>
+                <li><a href="#financna-analyza" class="nav-link" data-section="financna-analyza">8. Finančná Analýza</a></li>
+                <li><a href="#zavery" class="nav-link" data-section="zavery">9. Závery a Odporúčania</a></li>
+            </ul>
+        </nav>
+
+        <!-- Hlavný obsah -->
+        <main class="w-full lg:w-3/4">
+            <header class="mb-8 header-bg">
+                <h1 class="mb-2">Podnikateľský Zámer</h1>
+                <p class="text-2xl font-semibold">Zážitkové Ubytovanie v Srdci Turca</p>
+                <p class="text-lg mt-2">Detailná analýza pre projekt Tiny Houses pri lese v regióne Martin.</p>
+            </header>
+
+            <!-- Sekcia 1: Úvod a Executive Summary -->
+            <section id="uvod" class="card">
+                <h2 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="header-icon-svg text-accent-primary"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                    1. Úvod a Executive Summary
+                </h2>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Prehľad projektu a vízia
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Tento podnikateľský zámer predstavuje komplexný plán na realizáciu projektu zážitkového ubytovania v regióne Turiec, konkrétne v Martine. Vychádza z rastúceho trendu v cestovnom ruchu, kde cestovatelia hľadajú viac než len miesto na prenocovanie; túžia po autentických, pohlcujúcich zážitkoch, ktoré ich spoja s prírodou a miestnou kultúrou. Víziou je vytvoriť unikátne ubytovacie zariadenie, ktoré bude symbolizovať "bohémsky luxus" v prírodnom prostredí, ponúkajúce nadštandardné služby a nezabudnuteľné momenty. Cieľom je poskytnúť hosťom nielen komfortné útočisko, ale aj platformu pre aktívne objavovanie krás Turca a ponorenie sa do jeho jedinečnej atmosféry.
+                        </p>
+                        <div class="highlight-box">
+                            <h3>Čo je zážitkové ubytovanie?</h3>
+                            <p class="text-secondary mb-2">
+                                Zážitkové ubytovanie, známe ako "zážitkové ubytovanie," predstavuje dynamicky rastúci segment v rámci odvetvia cestovného ruchu, ktorý presahuje tradičné možnosti ubytovania. Jeho hlavná príťažlivosť spočíva v poskytovaní <strong>jedinečných, pohlcujúcich zážitkov</strong>, často hlboko integrovaných s prírodným prostredím alebo výraznými tematickými konceptmi.
+                            </p>
+                            <p class="text-secondary">
+                                Tento prístup k ubytovaniu sa zameriava na vytvorenie <strong>nezabudnuteľných spomienok</strong> a hlbšieho spojenia s okolím, čím sa odlišuje od štandardných hotelových alebo penziónových služieb.
+                            </p>
+                        </div>
+                        <h3 class="sub-section-title">Typy zážitkového ubytovania na Slovensku:</h3>
+                        <div class="type-grid">
+                            <div class="type-item">
+                                <span class="icon">&#127957;</span>
+                                <strong>Glamping</strong>
+                                <p>Luxusná forma kempovania s hotelovým komfortom (kupolové stany, špeciálne chatky).</p>
+                            </div>
+                            <div class="type-item">
+                                <span class="icon">&#127794;</span>
+                                <strong>Domčeky na strome</strong>
+                                <p>Obydlia v korunách stromov, evokujúce nostalgiu a spojenie s prírodou.</p>
+                            </div>
+                            <div class="type-item">
+                                <span class="icon">&#127960;</span>
+                                <strong>Mini domy</strong>
+                                <p>Minimalistický dizajn, kompaktné rozmery, funkčnosť a efektívne využitie priestoru.</p>
+                            </div>
+                            <div class="type-item">
+                                <span class="icon">&#10024;</span>
+                                <strong>Iné unikátne typy</strong>
+                                <p>Jurty, hausbóty, ubytovanie v sudoch, teepee, prebudované vojenské bunkre.</p>
+                            </div>
+                        </div>
+                        <p class="text-secondary mb-4 mt-6">
+                            Hlavnou príťažlivosťou zážitkového ubytovania je jeho schopnosť bezproblémovo spojiť pokoj prírody s moderným komfortom, sľubujúc <strong>"nezabudnuteľné pocity" a oddych</strong>. Oslovuje rôznorodú klientelu, vrátane párov, skupín priateľov a rodín. Zákazníci sú ochotní zaplatiť výrazne vyššiu cenu za tieto diferencované ponuky.
+                        </p>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Kľúčové ciele a jedinečnosť konceptu
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Hlavnými cieľmi projektu sú dosiahnutie vysokej obsadenosti, zabezpečenie mimoriadnej spokojnosti hostí a udržateľná finančná výkonnosť. Jedinečnosť konceptu bude spočívať v kombinácii špecifického dizajnu ubytovacích jednotiek, tematických aktivít a silného ekologického prístupu. Ubytovanie bude navrhnuté tak, aby sa harmonicky integrovalo do krajiny, pričom bude klásť dôraz na udržateľnosť a minimálny dopad na životné prostredie.
+                        </p>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Zhrnutie realizácie a finančného potenciálu
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Realizácia projektu zahŕňa niekoľko kľúčových fáz, od akvizície vhodného pozemku, cez výber a inštaláciu prefabrikovaných domčekov, ich zariadenie a úpravu okolia, až po vybavenie všetkých potrebných povolení a spustením marketingových a predajných aktivít. Finančný potenciál je vnímaný ako značný, vzhľadom na rastúci dopyt po zážitkovom a udržateľnom turizme, ako aj na strategickú polohu Martina v jednom z najrozvinutejších turistických regiónov Slovenska. Predpokladá sa dosiahnutie prémiovej cenotvorby vďaka unikátnosti ponuky a vysokej kvality služieb.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sekcia 2: Koncept Zážitkového Ubytovania -->
+            <section id="koncept" class="card">
+                <h2 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="header-icon-svg text-accent-primary"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    2. Koncept Zážitkového Ubytovania
+                </h2>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Definícia a trendy (globálne a v SR)
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Zážitkové ubytovanie predstavuje zásadnú zmenu v ponuke ubytovacích služieb, ktorá presahuje jednoduché poskytovanie miesta na spanie. Jeho hlavným znakom je, že „aktivity sú v popredí“. Táto široká kategória zahŕňa všetko od rezortov ponúkajúcich dobrodružné výlety až po cestovné spoločnosti, ktoré kurátorujú zážitky s kompletným itinerárom.
+                        </p>
+                        <h3 class="sub-section-title">Kľúčové faktory jeho vzostupu:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li><strong>Dopyt po autenticite:</strong> Hľadanie prehliadok miestnej kuchyne, remeselných dielní a pobytov v komunitách.</li>
+                            <li><strong>Hľadanie prírody a dobrodružstva:</strong> Túžba po „čase v prírode“ a aktívnych výletoch (turistika, cyklistika, kemping).</li>
+                            <li><strong>Wellness a osobná pohoda:</strong> Rastúci záujem o wellness cestovný ruch, kombinujúci aktivity ako meditácia alebo tai chi s ubytovaním.</li>
+                            <li><strong>Personalizácia a jedinečný oddych:</strong> Požiadavka na personalizované a jedinečné zážitky z voľného času.</li>
+                        </ul>
+                        <h3 class="sub-section-title">Hlavné kategórie zážitkových pobytov:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li><strong>Príroda a dobrodružstvo:</strong> Outdoorové aktivity (napr. glamping Under Canvas).</li>
+                            <li><strong>Kultúrne ponorenie:</strong> Prehliadky miestnej kuchyne, remeselné dielne (napr. TripGuru).</li>
+                            <li><strong>Wellness a pobyty:</strong> Joga/meditačné pobyty, kúpeľné rezorty (napr. Treebones Resort).</li>
+                            <li><strong>Personalizované/tajomné cestovanie:</strong> Na mieru šité, prekvapivé itineráre (napr. Journee).</li>
+                            <li><strong>Unikátna architektúra/téma:</strong> Hotely s výrazným dizajnom (napr. Free Spirit Spheres, ľadové hotely, podvodné hotely).</li>
+                        </ul>
+                        <p class="text-secondary">
+                            Martin a jeho okolie majú značný potenciál pre rozvoj zážitkového turizmu, vďaka svojej polohe v jednom z najrozvinutejších turistických regiónov na Slovenska a bohatej ponuke kultúrnych a prírodných atrakcií.
+                        </p>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Navrhovaná jedinečnosť a téma
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Koncept zážitkového ubytovania v Martine by sa mal zamerať na "eko-glamping" alebo "tiny house v prírode" s výrazným dôrazom na udržateľnosť a minimálny dopad na životné prostredie.
+                        </p>
+                        <h3 class="sub-section-title">Kľúčové prvky jedinečnosti:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li><strong>Dizajn ubytovania:</strong> Moderné, prefabrikované "tiny houses" alebo luxusné glamping stany harmonicky integrované do prírodného prostredia s vysokým štandardom komfortu.</li>
+                            <li><strong>Tematické aktivity:</strong> Ponuka zážitkov súvisiacich s prírodou (riadené túry, cyklistika, pozorovanie hviezd), lokálnou kultúrou (kulinárske workshopy s miestnymi surovinami, remeselné dielne) alebo wellness (jóga v prírode, meditácia).</li>
+                            <li><strong>Technologické vybavenie:</strong> Zameranie na off-grid riešenia pre energetickú autonómiu a zníženie uhlíkovej stopy (solárne panely, batériové úložiská, systémy na filtrovanie vody).</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Cieľová skupina a jej potreby
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Cieľovou skupinou sú moderní cestovatelia, ktorí hľadajú "čas v prírode" a aktívne výlety, často s dôrazom na dobrodružstvo a unikátne zážitky. Patria sem aj "eco-conscious" zákazníci, ochotní platiť za udržateľné modely. Ideálne pre páry, rodiny a skupiny priateľov.
+                        </p>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Príklady úspešných zážitkových ubytovaní (inšpirácia)
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Inšpiráciu možno čerpať z globálnych a slovenských prípadov ako Experimental Group (Európa), Under Canvas (USA) pre glamping, a rôzne tiny houses a treehouses na Slovensku (napr. Glamping Resort, koliBka, Treehouse Kačín).
+                        </p>
+                        <h3 class="sub-section-title">Tabuľka: Typy zážitkového ubytovania v SR</h3>
+                        <div class="overflow-x-auto">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Typ ubytovania</th>
+                                        <th>Kľúčové charakteristiky / Unikátne prvky</th>
+                                        <th>Orientačné ceny (za noc)</th>
+                                        <th>Cieľová skupina</th>
+                                        <th>Príklady zo SR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Glamping</td>
+                                        <td>Luxusné stany, komfort hotela v prírode, Wi-Fi, prístup na pláž, gril</td>
+                                        <td>Od 37£ do 112£+</td>
+                                        <td>Milovníci prírody, páry, rodiny, eco-conscious cestovatelia</td>
+                                        <td>ForRest Glamping (Banská Štiavnica), Kutica (Nová Baňa), MaraCAMPING (Liptovský Trnovec)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tiny House</td>
+                                        <td>Kompaktné domčeky, plne vybavená kuchyňa, kúpeľňa, krb, vírivka/bazén, súkromie</td>
+                                        <td>Od 81$ do 128$+</td>
+                                        <td>Páry, hľadajúci únik z mesta, milovníci prírody, digitálni nomádi</td>
+                                        <td>koliBka (Michalová), Tiny House Lavender (Podtureň), "Boat" v Komjatnej, "Tiny House Tuscany"</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Treehouse</td>
+                                        <td>Ubytovanie v korunách stromov, prepojenie s prírodou, minimalizmus, suché WC, terasa</td>
+                                        <td>Cca 100€</td>
+                                        <td>Dobrodruhovia, hľadajúci netradičné zážitky, únik z reality</td>
+                                        <td>Treehouse Kačín (Bratislava), Treehouse Dlhá Lúka (Bratislava)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Eco-ubytovanie</td>
+                                        <td>Udržateľné technológie, prírodné materiály, bio strava, recyklácia, nízka uhlíková stopa</td>
+                                        <td>Predpokladá sa prémia</td>
+                                        <td>Eco-conscious cestovatelia, záujemcovia o wellness a zdravý životný štýl</td>
+                                        <td>Eco-centrum Zajezová, Hotel Dália (Košice)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sekcia 3: Lokalita a Pozemok v Martine -->
+            <section id="lokalita" class="card">
+                 <h2 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="header-icon-svg text-accent-primary"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    3. Lokalita a Pozemok v Martine
+                </h2>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Analýza Martina ako turistickej destinácie
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Martin je strategicky umiestnený v srdci Slovenska a predstavuje "skrytý klenot" pre cestovný ruch. Región Turiec, ktorého je Martin centrom, je identifikovaný ako jeden zo šiestich najrozvinutejších turistických regiónov na Slovensku.
+                        </p>
+                        <h3 class="sub-section-title">Kľúčové atrakcie a aktivity:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li><strong>Príroda a outdoorové aktivity:</strong> Vstupná brána do Malej Fatry, lyžiarske stredisko Winter Park Martinky, Ferrata HZS, cyklistika, turistika, vodné športy na štrkoviskách.</li>
+                            <li><strong>Kultúra a história:</strong> Múzeum slovenskej dediny, Národný cintorín, Slovenské komorné divadlo, rôzne múzeá.</li>
+                            <li><strong>Iné aktivity:</strong> Plaváreň Sunny, Kúpalisko Sunny, jazdectvo, hradné zrúcaniny.</li>
+                        </ul>
+                        <p class="text-secondary mb-4">
+                            Martin aktívne podporuje ekoturizmus a je vnímaný ako "zelená oáza" s jasným záväzkom k zachovaniu prírodných krás a udržateľnosti.
+                        </p>
+                        <h3 class="sub-section-title">Konkurenčné ubytovanie v Martine a okolí:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li><strong>Chaty a chalety s wellness:</strong> Množstvo chát s vírivkami, kúpacími kaďami a saunami (napr. Chata MartinSki, Chalety Ferrata).</li>
+                            <li><strong>Penzióny a apartmány:</strong> Ponúkajú moderné ubytovanie, niektoré s wellness prvkami (napr. Penzión u Martina).</li>
+                            <li><strong>Mini domy a unikátne koncepty v okolí:</strong> Kočovný Wagón, Sidehill, Chatka so Saunou v Prírode Turany.</li>
+                        </ul>
+                        <p class="text-secondary">
+                            Potenciál cestovného ruchu v Martine je značný, avšak pre úspech nového zážitkového ubytovania bude nevyhnutná silná diferenciácia.
+                        </p>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Požiadavky na pozemok (prístup, siete, legislatíva)
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <h3 class="sub-section-title">Právne aspekty využitia nestavebného pozemku:</h3>
+                        <p class="text-red-500 font-bold mb-4">
+                            Upozornenie: Požiadavka na "nestavebný pozemok" pre komerčné ubytovanie je po novom Zákone o výstavbe (účinný od 1.4.2024/2025) veľmi problematická a vysoko riziková.
+                        </p>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li>Mobilný dom je považovaný za stavbu, ak je využívaný na bývanie/rekreáciu, zostáva dlhodobo na mieste, je napojený na inžinierske siete alebo si vyžaduje úpravu terénu/základovú dosku.</li>
+                            <li>Na jeho umiestnenie je potrebné minimálne územné rozhodnutie alebo ohlásenie stavby, prípadne stavebné povolenie. Nepovolené umiestnenie môže viesť k nariadeniu odstránenia stavby.</li>
+                            <li>Jedinou legálnou cestou pre nestavebný pozemok je zmena účelu využitia pozemku v územnom pláne, čo je dlhý a neistý proces (mesiace až roky).</li>
+                            <li>Prefabrikované domy (montované domy) si tiež vyžadujú stavebné povolenie, ak majú viac ako 25 m², menia plochu/objem, sú vyššie ako 5 metrov, alebo sú pevne spojené so zemou.</li>
+                            <li>Napojenie na inžinierske siete (elektrina, voda, kanalizácia) dom ukotvuje a znemožňuje jeho presun, čo ho klasifikuje ako stavbu.</li>
+                        </ul>
+                        <h3 class="sub-section-title">Tabuľka: Požiadavky na Pozemok a Právne Možnosti</h3>
+                        <div class="overflow-x-auto">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Typ pozemku</th>
+                                        <th>Možnosť umiestnenia mobilného/prefabrikovaného domu</th>
+                                        <th>Potrebné povolenia/kroky</th>
+                                        <th>Riziká / Komentár</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Stavebný pozemok</td>
+                                        <td>Áno, ideálna voľba</td>
+                                        <td>Stavebné povolenie, územné rozhodnutie</td>
+                                        <td>Najjednoduchšia cesta, ľahšie napojenie na siete.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Záhrada / Orná pôda</td>
+                                        <td>Áno, s podmienkami</td>
+                                        <td>Zmena účelu využitia v územnom pláne, stavebné povolenie</td>
+                                        <td>Dlhý a neistý proces zmeny územného plánu.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nestavebný pozemok</td>
+                                        <td>Právne nemožné bez zmeny územného plánu</td>
+                                        <td>Zmena účelu využitia v územnom pláne, stavebné povolenie</td>
+                                        <td>Vysoké právne riziko, možnosť nariadenia odstránenia.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sekcia 4: Realizácia Ubytovacieho Zariadenia -->
+            <section id="realizacia" class="card">
+                 <h2 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="header-icon-svg text-accent-primary"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    4. Realizácia Ubytovacieho Zariadenia
+                </h2>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Výber a dovoz domčeku z Poľska
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Pri výbere a dovoze prefabrikovaného domčeku je potrebné zvážiť možnosti od poľských aj slovenských výrobcov, ako aj súvisiace logistické, colné a technické aspekty.
+                        </p>
+                        <h3 class="sub-section-title">Prehľad výrobcov prefabrikovaných domov:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li><strong>Poľskí výrobcovia:</strong> Modular System (moderné, mobilné modulárne priestory, export do EÚ a USA).</li>
+                            <li><strong>Slovenskí výrobcovia:</strong> Modularna Stavba (modulárne domy s oceľovou konštrukciou, rýchla montáž, energetický certifikát).</li>
+                            <li><strong>Tureckí výrobcovia:</strong> Idealmod (ponúkajú prefabrikované domy na Slovensku).</li>
+                        </ul>
+                        <h3 class="sub-section-title">Logistika a náklady na transport:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li>Preprava cestnou dopravou.</li>
+                            <li>Stavenisko musí byť prístupné pre ťažké nákladné vozidlá (do 22 ton).</li>
+                            <li>Na vyloženie je potrebný mobilný žeriav (balíky 2-7,5 tony).</li>
+                        </ul>
+                        <h3 class="sub-section-title">Colné a daňové aspekty (EÚ regulácie):</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li>V rámci EÚ sa neplatia colné poplatky.</li>
+                            <li>DPH sa vypočítava na základe sadzby DPH členského štátu, do ktorého sa tovar odosiela (Slovensko 20%).</li>
+                        </ul>
+                        <h3 class="sub-section-title">Technické požiadavky a certifikácie (napr. A0):</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li>Od roku 2021 musia byť všetky nové budovy s takmer nulovou spotrebou energie (NZEB), čo zodpovedá energetickému certifikátu triedy A0.</li>
+                            <li>Importované produkty musia spĺňať slovenské normy.</li>
+                        </ul>
+                        <h3 class="sub-section-title">Tabuľka: Porovnanie prefabrikovaných domov (Poľsko vs. Slovensko)</h3>
+                        <div class="overflow-x-auto">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Kritérium</th>
+                                        <th>Poľský výrobca</th>
+                                        <th>Slovenský výrobca</th>
+                                        <th>Odporúčanie</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Doba dodania/montáže</td>
+                                        <td>Vyžaduje lokálnu pomoc</td>
+                                        <td>Montáž do 2 mesiacov</td>
+                                        <td>Slovenskí výrobcovia môžu ponúknuť rýchlejšiu inštaláciu.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cena za m²</td>
+                                        <td>Konkurencieschopná</td>
+                                        <td>Od 1200 €/m²</td>
+                                        <td>Porovnať konkrétne ponuky vrátane všetkých nákladov.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Logistika/Doprava</td>
+                                        <td>Komplexná, potreba žeriavu</td>
+                                        <td>Jednoduchšia</td>
+                                        <td>Slovenský výrobca znižuje logistické komplikácie.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Znalosť miestnych predpisov</td>
+                                        <td>Obmedzená</td>
+                                        <td>Vysoká (poskytujú certifikát A0)</td>
+                                        <td>Slovenskí výrobcovia sú lepšie prispôsobení normám.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Záruka a servis</td>
+                                        <td>Preveriť medzinárodný servis</td>
+                                        <td>Lokálny servis a podpora</td>
+                                        <td>Lokálny servis je výhodou.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Úprava pozemku, inštalácia a dizajn
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            <strong>Úprava pozemku a inštalácia:</strong> Inštalácia na zemné skrutky je rýchla a cenovo výhodná. Pripojenie na inžinierske siete (elektrina, voda, kanalizácia) je zodpovednosťou zákazníka a tieto pripojenia dom ukotvujú, čím sa stáva pevnou stavbou.
+                        </p>
+                        <p class="text-secondary mb-4">
+                            <strong>Zariadenie a dizajn interiéru:</strong> Dizajn by mal odrážať koncept "bohemian luxury". Odporúča sa využitie prírodných materiálov a panoramatických okien pre prepojenie s prírodou.
+                        </p>
+                        <p class="text-secondary">
+                            <strong>Vonkajšie úpravy a doplnkové aktivity:</strong> Vytvorenie vonkajšieho posedenia, priestoru na grilovanie a ohniska. Pre zvýšenie luxusu zvážiť vírivku, bazén alebo saunu. Doplnkové aktivity môžu zahŕňať požičiavanie bicyklov, kurzy varenia alebo remeselné dielne.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sekcia 5: Povolenia a Právna Forma -->
+            <section id="povolenia" class="card">
+                 <h2 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="header-icon-svg text-accent-primary"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    5. Povolenia a Právna Forma
+                </h2>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Porovnanie vhodných právnych foriem
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Výber správnej právnej formy je kľúčovým strategickým rozhodnutím, ktoré ovplyvní administratívnu záťaž, daňové povinnosti, mieru ručenia a celkovú flexibilitu podnikania. Pre projekt zážitkového ubytovania prichádzajú do úvahy viaceré možnosti, z ktorých každá má svoje špecifické výhody a nevýhody.
+                        </p>
+                        
+                        <h3 class="sub-section-title">Prehľad možností</h3>
+                        <p class="text-secondary mb-2"><strong>1. Živnosť (Fyzická osoba - podnikateľ):</strong> Najjednoduchšia a najrýchlejšia forma začatia podnikania, vhodná pre jednotlivca. Podnikateľ ručí za záväzky celým svojím majetkom.</p>
+                        <p class="text-secondary mb-2"><strong>2. Spoločnosť s ručením obmedzeným (s.r.o.):</strong> Najčastejšia forma obchodnej spoločnosti na Slovensku. Poskytuje obmedzené ručenie (spoločníci neručia osobným majetkom) a profesionálnejší imidž.</p>
+                        <p class="text-secondary mb-2"><strong>3. Občianske združenie (o.z.) / Nezisková organizácia (n.o.):</strong> Tieto formy sú určené primárne na neziskové aktivity. Podnikanie môžu vykonávať len ako doplnkovú činnosť na podporu svojho hlavného cieľa (napr. ochrana prírody, rozvoj regiónu). Zisk musí byť použitý na hlavný účel, nie je možné ho rozdeliť medzi členov.</p>
+                        <p class="text-secondary mb-4"><strong>4. Družstvo:</strong> Spoločenstvo neuzavretého počtu osôb založené za účelom podnikania alebo zabezpečovania hospodárskych, sociálnych alebo iných potrieb svojich členov. Vyžaduje minimálne 5 členov (fyzických osôb) alebo 2 právnické osoby.</p>
+
+                        <h3 class="sub-section-title">Porovnávacia tabuľka právnych foriem</h3>
+                        <div class="overflow-x-auto">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Kritérium</th>
+                                        <th>Živnosť</th>
+                                        <th>s.r.o.</th>
+                                        <th>o.z. / n.o.</th>
+                                        <th>Družstvo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Založenie</strong></td>
+                                        <td>Rýchle, jednoduché, nízke poplatky.</td>
+                                        <td>Zložitejšie (notár, obchodný register), vyššie poplatky.</td>
+                                        <td>Registrácia na ministerstve vnútra (o.z.) / v registri (n.o.). Relatívne jednoduché.</td>
+                                        <td>Zložité (ustanovujúca schôdza, stanovy, notár, obchodný register).</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Ručenie</strong></td>
+                                        <td class="text-red-500">Neobmedzené (celým osobným majetkom).</td>
+                                        <td class="text-green-500">Obmedzené (len do výšky nesplateného vkladu).</td>
+                                        <td>Organizácia ručí svojím majetkom, členovia neručia.</td>
+                                        <td>Členovia neručia za záväzky družstva.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Zdaňovanie</strong></td>
+                                        <td>Daň z príjmov FO (15% / 19% / 25%), možnosť paušálnych výdavkov.</td>
+                                        <td>Daň z príjmov PO (15% / 21%). Dividendy 7%.</td>
+                                        <td>Príjmy z hlavnej činnosti oslobodené od dane, zisk z podnikania sa zdaňuje.</td>
+                                        <td>Daň z príjmov PO (21%).</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Administratíva</strong></td>
+                                        <td>Jednoduché účtovníctvo / daňová evidencia.</td>
+                                        <td>Povinné podvojné účtovníctvo, zložitejšia administratíva.</td>
+                                        <td>Podvojné účtovníctvo, výročné správy.</td>
+                                        <td>Podvojné účtovníctvo, komplexná správa (predstavenstvo, kontrolná komisia).</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Vhodnosť pre projekt</strong></td>
+                                        <td>Vhodné pre štart s nízkym rizikom a kapitálom. Vysoké osobné riziko.</td>
+                                        <td class="text-green-500"><strong>Najvhodnejšia forma</strong> pre komerčný projekt s cieľom zisku a budúcim rastom.</td>
+                                        <td>Vhodné, ak je hlavným cieľom rozvoj regiónu/ekológia a ubytovanie je len doplnok. Nevhodné pre primárne komerčný zámer.</td>
+                                        <td>Nevhodné pre tento typ projektu, príliš komplexné a určené pre iný model fungovania.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Plusy (+)</strong></td>
+                                        <td>
+                                            <ul class="list-disc text-green-500"><li>Jednoduchosť</li><li>Nízke náklady na založenie</li><li>Flexibilita</li></ul>
+                                        </td>
+                                        <td>
+                                            <ul class="list-disc text-green-500"><li>Ochrana majetku</li><li>Profesionálny imidž</li><li>Ľahší prístup k úverom</li><li>Možnosť vstupu investora</li></ul>
+                                        </td>
+                                        <td>
+                                            <ul class="list-disc text-green-500"><li>Možnosť získať granty, dotácie, 2% z daní</li><li>Oslobodenie od niektorých daní</li></ul>
+                                        </td>
+                                        <td>
+                                            <ul class="list-disc text-green-500"><li>Demokratické rozhodovanie</li><li>Otvorené členstvo</li></ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Mínusy (-)</strong></td>
+                                        <td>
+                                            <ul class="list-disc text-red-500"><li>Neobmedzené ručenie</li><li>Nižšia dôveryhodnosť pre banky</li></ul>
+                                        </td>
+                                        <td>
+                                            <ul class="list-disc text-red-500"><li>Zložitejšie založenie</li><li>Vyššia administratívna záťaž</li><li>Dvojité zdanenie (zisk + dividenda)</li></ul>
+                                        </td>
+                                        <td>
+                                            <ul class="list-disc text-red-500"><li>Zisk sa nemôže rozdeliť</li><li>Podnikanie len ako doplnková činnosť</li><li>Prísnejšia kontrola</li></ul>
+                                        </td>
+                                        <td>
+                                            <ul class="list-disc text-red-500"><li>Prílišná zložitosť</li><li>Pomalé rozhodovanie</li><li>Nevhodné pre malý projekt</li></ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 class="sub-section-title">Záverečné odporúčanie</h3>
+                        <p class="text-secondary">
+                            Na základe porovnania je pre projekt komerčného zážitkového ubytovania jednoznačne <strong>najvhodnejšou a najbezpečnejšou právnou formou spoločnosť s ručením obmedzeným (s.r.o.)</strong>. Poskytuje kľúčovú výhodu v podobe ochrany osobného majetku pred podnikateľskými rizikami, čo je pri investícii do nehnuteľností a prevádzky zásadné. Zároveň vytvára profesionálny rámec pre budúci rast, prípadný vstup ďalších investorov alebo získanie bankového financovania. Aj keď je administratívne náročnejšia ako živnosť, tieto nevýhody sú vyvážené podstatne vyššou mierou právnej a finančnej istoty.
+                        </p>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Potrebné povolenia a licencie pre prevádzku
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Pre prevádzku zážitkového ubytovania je potrebné získať a dodržiavať viacero povolení a predpisov.
+                        </p>
+                        <h3 class="sub-section-title">Živnostenské oprávnenie:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li>Typ závisí od rozsahu služieb (voľná alebo viazaná živnosť).</li>
+                            <li>Získava sa ohlásením na okresnom (živnostenskom) úrade.</li>
+                        </ul>
+                        <h3 class="sub-section-title">Hygienické požiadavky a prevádzkový poriadok:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li>Vypracovaný prevádzkový poriadok v súlade so zákonom o ochrane verejného zdravia.</li>
+                            <li>Zabezpečenie minimálnej obytnej plochy, denného osvetlenia, základného vybavenia a vetrania.</li>
+                        </ul>
+                        <h3 class="sub-section-title">Požiarna ochrana:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li>Pravidelné kontroly a údržba požiarnych zariadení (hasiace prístroje, detektory dymu).</li>
+                            <li>Inštalácia protipožiarnych dverí.</li>
+                            <li>Školenie personálu o evakuačných postupoch.</li>
+                        </ul>
+                        <h3 class="sub-section-title">Registračné povinnosti:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li>Registrácia v Registri ubytovacích zariadení Štatistického úradu SR.</li>
+                            <li>Platenie miestnej dane za ubytovanie obci.</li>
+                            <li>Vedenie evidenčnej knihy ubytovaných osôb.</li>
+                        </ul>
+                        <h3 class="sub-section-title">Tabuľka: Prehľad Potrebných Povolení a Licencií</h3>
+                        <div class="overflow-x-auto">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Typ povolenia/licencie</th>
+                                        <th>Príslušný úrad/inštitúcia</th>
+                                        <th>Kľúčové požiadavky</th>
+                                        <th>Lehota</th>
+                                        <th>Poplatky</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Živnostenské oprávnenie</td>
+                                        <td>Okresný (živnostenský) úrad</td>
+                                        <td>Splnenie všeobecných a osobitných podmienok</td>
+                                        <td>3 pracovné dni</td>
+                                        <td>22 € (11 € el.)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stavebné povolenie</td>
+                                        <td>Špecializovaný stavebný úrad</td>
+                                        <td>Súlad s územným plánom, vyjadrenia sietí</td>
+                                        <td>30 dní</td>
+                                        <td>50 € (el.), 100 € (klasicky)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Prevádzkový poriadok</td>
+                                        <td>Regionálny úrad verejného zdravotníctva (RÚVZ)</td>
+                                        <td>Obsah podľa zákona č. 355/2007 Z. z.</td>
+                                        <td>Schválenie RÚVZ</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Požiarna ochrana</td>
+                                        <td>Hasičský a záchranný zbor</td>
+                                        <td>Hasiace prístroje, detektory, plán</td>
+                                        <td>Pravidelné kontroly</td>
+                                        <td>Náklady na vybavenie</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Registrácia ŠÚ SR</td>
+                                        <td>Štatistický úrad SR</td>
+                                        <td>Registrácia v Registri ubytovacích zariadení</td>
+                                        <td>Pred začatím prevádzky</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Miestna daň za ubytovanie</td>
+                                        <td>Obecný úrad (Martin)</td>
+                                        <td>Oznamovacie povinnosti, evidenčná kniha</td>
+                                        <td>Oznámenie kapacity</td>
+                                        <td>0,15 €/osoba/noc</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sekcia 6: Marketing a Predaj -->
+            <section id="marketing" class="card">
+                 <h2 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="header-icon-svg text-accent-primary"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    6. Marketing a Predaj
+                </h2>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Marketingová stratégia pre zážitkové ubytovanie
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Úspešná marketingová stratégia pre zážitkové ubytovanie v Martine musí byť viacrozmerná a zameraná na komunikáciu jedinečnej hodnoty.
+                        </p>
+                        <h3 class="sub-section-title">Definovanie USP a budovanie značky:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li>Jasne definovať, čo robí ubytovanie jedinečným (dizajn, služby, lokalita, eko-prístup).</li>
+                            <li>Rozvíjať konzistentný hlas značky a vizuály.</li>
+                            <li>Používať profesionálne fotografie a videá.</li>
+                        </ul>
+                        <h3 class="sub-section-title">Online marketing (SEO, sociálne siete):</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li>Vytvorenie optimalizovanej webovej stránky s relevantnými kľúčovými slovami.</li>
+                            <li>Vizuálna prezentácia je kľúčová (Instagram, Pinterest).</li>
+                            <li>Využívať influencer marketing a angažovať sa s publikom.</li>
+                        </ul>
+                        <h3 class="sub-section-title">Predajné kanály a partnerstvá:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li>Registrácia na globálnych platformách (Booking.com, Airbnb) pre počiatočnú viditeľnosť.</li>
+                            <li>Investícia do vlastnej webovej stránky s integrovaným rezervačným systémom pre priame rezervácie.</li>
+                            <li>Aktívna spolupráca s miestnymi turistickými organizáciami a poskytovateľmi služieb.</li>
+                        </ul>
+                        <h3 class="sub-section-title">Tabuľka: Marketingový Mix a Kanály Predaja</h3>
+                        <div class="overflow-x-auto">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Kanál / Stratégia</th>
+                                        <th>Popis a kľúčové akcie</th>
+                                        <th>Dôležitosť</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Webová stránka (vlastná)</td>
+                                        <td>SEO, kvalitný obsah, rezervačný systém, fotky/videá, recenzie</td>
+                                        <td>Kľúčové pre priame rezervácie a budovanie značky.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sociálne siete</td>
+                                        <td>Instagram, Pinterest (vizuálny obsah), Facebook (široké publikum)</td>
+                                        <td>Nevyhnutné pre vizuálne rozprávanie príbehu.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Influencer marketing</td>
+                                        <td>Spolupráca s cestovnými influencermi</td>
+                                        <td>Vysoký dosah a dôveryhodnosť.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Online Travel Agencies (OTA)</td>
+                                        <td>Booking.com, Airbnb. Optimalizácia profilu, reakcia na recenzie</td>
+                                        <td>Základ pre počiatočnú viditeľnosť a obsadenosť.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Priame rezervácie</td>
+                                        <td>Exkluzívne ponuky, vernostné programy, email marketing</td>
+                                        <td>Kľúčové pre dlhodobú ziskovosť.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Partnerstvá (lokálne)</td>
+                                        <td>Spolupráca s miestnymi organizáciami, sprievodcami, farmármi</td>
+                                        <td>Zvyšuje autenticitu a podporuje lokálnu ekonomiku.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sekcia 7: Časová Os Realizácie -->
+            <section id="casova-os" class="card">
+                 <h2 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="header-icon-svg text-accent-primary"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    7. Časová Os Realizácie
+                </h2>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Predpokladaná časová os projektu
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Táto os je orientačná a môže sa meniť. Celková predpokladaná doba realizácie: 12-14 mesiacov (bez započítania prípadnej dlhej zmeny územného plánu, ktorá by mohla pridať ďalších 6-24 mesiacov).
+                        </p>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-item-point">1</div>
+                                <div class="timeline-item-content">
+                                    <h4 class="timeline-item-title">Fáza 1: Príprava a Plánovanie (Mesiace 1-3)</h4>
+                                    <ul class="list-disc text-secondary text-sm">
+                                        <li>Detailné prepracovanie konceptu, založenie s.r.o.</li>
+                                        <li>Intenzívne hľadanie pozemku, finančná analýza.</li>
+                                        <li>Akvizícia pozemku, výber dodávateľa, projektová dokumentácia.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-item-point">2</div>
+                                <div class="timeline-item-content">
+                                    <h4 class="timeline-item-title">Fáza 2: Povolenia a Príprava (Mesiace 4-9)</h4>
+                                    <ul class="list-disc text-secondary text-sm">
+                                        <li>Podanie žiadosti o stavebné povolenie.</li>
+                                        <li>Príprava pozemku (terénne úpravy, základy), realizácia prípojok.</li>
+                                        <li>Dovoz a montáž prefabrikovaných domčekov.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-item-point">3</div>
+                                <div class="timeline-item-content">
+                                    <h4 class="timeline-item-title">Fáza 3: Zariadenie a Finalizácia (Mesiace 10-12)</h4>
+                                    <ul class="list-disc text-secondary text-sm">
+                                        <li>Zariadenie interiérov, inštalácia off-grid systémov.</li>
+                                        <li>Vonkajšie úpravy pozemku, finálne kontroly.</li>
+                                        <li>Získanie kolaudačného rozhodnutia.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-item-point">4</div>
+                                <div class="timeline-item-content">
+                                    <h4 class="timeline-item-title">Fáza 4: Spustenie Prevádzky (Mesiac 13+)</h4>
+                                    <ul class="list-disc text-secondary text-sm">
+                                        <li>Spustenie webu a marketingových kampaní.</li>
+                                        <li>Oficiálne otvorenie, priebežná optimalizácia.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sekcia 8: Finančná Analýza (s kalkulačkou) -->
+            <section id="financna-analyza" class="card">
+                <h2 class="section-title">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="header-icon-svg text-accent-primary"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    8. Finančná Analýza
+                </h2>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Počiatočné investičné náklady (odhad)
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            <strong>Poznámka:</strong> Tieto odhady sú pre jednu ubytovaciu jednotku a sú upravené tak, aby celková počiatočná investícia nepresiahla 50 000 €.
+                        </p>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li><strong>Pozemok:</strong> Odhad 10 000 €</li>
+                            <li><strong>Domček (prefabrikovaný/modulárny):</strong> Odhad 30 000 € (vrátane dovozu a montáže)</li>
+                            <li><strong>Úpravy pozemku a inštalácia (základy, siete):</strong> Odhad 5 000 €</li>
+                            <li><strong>Zariadenie a dizajn interiéru:</strong> Odhad 3 000 €</li>
+                            <li><strong>Povolenia, licencie, právne služby:</strong> Odhad 1 000 €</li>
+                            <li><strong>Marketing (počiatočný):</strong> Odhad 1 000 €</li>
+                        </ul>
+                        <p class="text-primary font-bold mt-4">
+                            Celkové počiatočné investičné náklady (odhad): Maximálne 50 000 € pre jednu jednotku.
+                        </p>
+                        <div class="mt-8 h-96">
+                            <h3 class="sub-section-title">Rozloženie počiatočných investičných nákladov</h3>
+                            <canvas id="investmentChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Prevádzkové náklady a predpokladané príjmy
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <h3 class="sub-section-title">Mesačné prevádzkové náklady:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li><strong>Energie:</strong> Odhad 100 – 300 € (vďaka A0 a off-grid riešeniam).</li>
+                            <li><strong>Údržba a čistenie:</strong> Odhad 200 – 500 €.</li>
+                            <li><strong>Marketing a predaj:</strong> Odhad 100 – 500 €.</li>
+                            <li><strong>Dane, poplatky, poistenie, ostatné:</strong> Odhad 200 – 450 €.</li>
+                        </ul>
+                        <h3 class="sub-section-title">Očakávané príjmy:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li><strong>Priemerná cena za noc:</strong> Reálne očakávať 80 – 150 € za noc.</li>
+                            <li><strong>Obsadenosť:</strong> Priemerná ročná obsadenosť 40-60%.</li>
+                            <li><strong>Doplnkové služby:</strong> Príjmy z predaja lokálnych produktov, organizovaných túr, workshopov, wellness služieb.</li>
+                        </ul>
+                        <div class="mt-8 h-96">
+                            <h3 class="sub-section-title">Projekcia ročných príjmov a zisku</h3>
+                            <canvas id="revenueProfitChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Kalkulačka návratnosti investície a 10-ročná projekcia
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-6">
+                            Použite túto interaktívnu kalkulačku na odhad počiatočných nákladov, ročných príjmov a návratnosti investície pre <strong>jednu ubytovaciu jednotku</strong>.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+                            <div class="input-group"><label for="costPerUnit">Náklady na domček (€):</label><input type="number" id="costPerUnit" value="30000" min="0"></div>
+                            <div class="input-group"><label for="landCost">Náklady na pozemok (€):</label><input type="number" id="landCost" value="10000" min="0"></div>
+                            <div class="input-group"><label for="utilitiesCost">Náklady na siete a základy (€):</label><input type="number" id="utilitiesCost" value="5000" min="0"></div>
+                            <div class="input-group"><label for="interiorExteriorCost">Náklady na interiér/exteriér (€):</label><input type="number" id="interiorExteriorCost" value="3000" min="0"></div>
+                            <div class="input-group"><label for="marketingAdminCost">Marketing a administratíva (€):</label><input type="number" id="marketingAdminCost" value="2000" min="0"></div>
+                            <div class="input-group"><label for="pricePerNight">Priemerná cena za noc (€):</label><input type="number" id="pricePerNight" value="120" min="0"></div>
+                            <div class="input-group"><label for="occupancyRate">Priemerná ročná obsadenosť (%):</label><input type="number" id="occupancyRate" value="50" min="0" max="100"></div>
+                            <div class="input-group"><label for="monthlyOperatingCost">Mesačné prevádzkové náklady (€):</label><input type="number" id="monthlyOperatingCost" value="800" min="0"></div>
+                        </div>
+                        <button id="calculateBtn" class="mt-4 w-full px-6 py-4 bg-accent-primary text-white font-bold text-lg rounded-xl shadow-lg hover:bg-accent-secondary transition duration-300 transform hover:scale-105">
+                            Vypočítať
+                        </button>
+                        <div id="results" class="result-box hidden">
+                            <p><strong>Celková počiatočná investícia:</strong> <span id="totalInvestment"></span></p>
+                            <p><strong>Odhadovaný ročný príjem:</strong> <span id="annualRevenue"></span></p>
+                            <p><strong>Odhadovaný ročný zisk (pred zdanením):</strong> <span id="annualProfit"></span></p>
+                            <p><strong>Odhadovaná návratnosť investície:</strong> <span id="paybackPeriod"></span> rokov</p>
+                            <p class="mt-4 pt-4 border-t border-border-color"><strong>Predpokladaný kumulatívny zisk po 10 rokoch:</strong> <span id="tenYearProfit"></span></p>
+                        </div>
+                        <div class="mt-8 h-96">
+                            <h3 class="sub-section-title">10-ročná projekcia príjmov a ziskov</h3>
+                            <canvas id="tenYearForecastChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sekcia 9: Závery a Odporúčania -->
+            <section id="zavery" class="card">
+                 <h2 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="header-icon-svg text-accent-primary"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    9. Závery a Odporúčania
+                </h2>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Závery
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-secondary mb-4">
+                            Projekt zážitkového ubytovania v Martine má značný potenciál uspieť na slovenskom trhu, vzhľadom na rastúci dopyt po autentických a udržateľných cestovateľských zážitkoch. Martin a región Turiec sú pre tento typ podnikania ideálnou lokalitou, ponúkajúcou bohaté prírodné krásy a kultúrne dedičstvo, ktoré možno integrovať do jedinečnej ponuky.
+                        </p>
+                        <p class="text-secondary mb-4">
+                            Kľúčom k úspechu je však dôkladné plánovanie a systematické riešenie potenciálnych prekážok. Najväčšou výzvou je požiadavka na umiestnenie ubytovania na "nestavebnom pozemku". Analýza ukázala, že takýto prístup je právne komplikovaný a môže viesť k značným časovým oneskoreniam a dodatočným nákladom spojeným so zmenou územného plánu a získavaním stavebných povolení.
+                        </p>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-header">
+                        Kľúčové odporúčania pre realizáciu projektu
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon icon-svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="collapsible-content">
+                        <h3 class="sub-section-title">Kľúčové odporúčania:</h3>
+                        <ul class="list-disc text-secondary mb-4">
+                            <li><strong>Strategický výber pozemku:</strong> Prioritizovať pozemky, ktoré sú už určené na rekreačné účely alebo majú jasný potenciál pre zmenu územného plánu.</li>
+                            <li><strong>Dôraz na "zážitok":</strong> Koncept musí presahovať len estetiku. Mal by byť hlboko zakorenený v prírodnom a kultúrnom dedičstve Turca.</li>
+                            <li><strong>Udržateľnosť ako predajný argument:</strong> Investícia do energeticky efektívnych domčekov (A0) a off-grid riešení zníži náklady a bude silným lákadlom.</li>
+                            <li><strong>Komplexný marketing:</strong> Rozpočet by mal prioritizovať profesionálnu fotografiu a videoprodukciu.</li>
+                            <li><strong>Optimalizácia priamych rezervácií:</strong> Investícia do vlastnej, špičkovej webovej stránky s rezervačným systémom.</li>
+                            <li><strong>Budovanie lokálnych partnerstiev:</strong> Aktívna spolupráca s miestnymi turistickými organizáciami a poskytovateľmi aktivít.</li>
+                            <li><strong>Dôsledné plnenie povinností:</strong> Zabezpečenie všetkých živnostenských oprávnení, stavebných povolení a registračných povinností.</li>
+                        </ul>
+                        <p class="text-secondary mt-4">
+                            Realizácia tohto zámeru si vyžaduje značné počiatočné investície a komplexnú koordináciu, ale pri správnom prístupe má potenciál stať sa úspešným a vyhľadávaným zážitkovým ubytovaním v srdci Slovenska.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="text-center py-8 text-secondary border-t border-border-color mt-8">
+        <p>Copyright © 2025 LAVERDE TECH</p>
+        <a href="https://www.laverdetech.sk" target="_blank" rel="noopener noreferrer" class="hover:text-accent-secondary transition-colors">www.laverdetech.sk</a>
+    </footer>
+
+    <script>
+        // Funkcia pre prepínanie kolapsibilných sekcií
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                if (content && content.classList.contains('collapsible-content')) {
+                    const isOpen = content.classList.contains('open');
+                    // Zatvorí všetky ostatné otvorené sekcie v rámci tej istej karty
+                    header.closest('.card').querySelectorAll('.collapsible-content.open').forEach(openContent => {
+                        if (openContent !== content) {
+                            openContent.classList.remove('open');
+                            openContent.previousElementSibling.classList.remove('open');
+                        }
+                    });
+                    // Otvorí/zatvorí kliknutú sekciu
+                    content.classList.toggle('open');
+                    header.classList.toggle('open');
+                }
+            });
+        });
+
+        // Funkcia pre aktiváciu navigačných odkazov pri posúvaní
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href').substring(1) === entry.target.id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: "-30% 0px -70% 0px" });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Chart.js instances
+        let investmentChartInstance = null;
+        let revenueProfitChartInstance = null;
+        let tenYearForecastChartInstance = null;
+        
+        // Globálne nastavenia pre Chart.js pre tmavú tému
+        Chart.defaults.color = '#a0aec0'; // --text-secondary
+        Chart.defaults.borderColor = '#4a5568'; // --border-color
+        
+        function renderInvestmentChart(data) {
+            const ctx = document.getElementById('investmentChart').getContext('2d');
+            if (investmentChartInstance) investmentChartInstance.destroy();
+            
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(246, 173, 85, 0.6)'); // --accent-secondary
+            gradient.addColorStop(1, 'rgba(221, 107, 32, 0.6)'); // --accent-primary
+
+            investmentChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pozemok', 'Domček', 'Siete', 'Interiér', 'Marketing'],
+                    datasets: [{
+                        label: 'Náklady v €',
+                        data: data,
+                        backgroundColor: gradient,
+                        borderColor: '#f6ad55',
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        hoverBackgroundColor: '#dd6b20'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#2d3748' } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1a202c',
+                            titleColor: '#f6ad55',
+                            bodyColor: '#e2e8f0',
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: false
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderRevenueProfitChart(annualRevenue, annualOperatingCost, annualProfit) {
+            const ctx = document.getElementById('revenueProfitChart').getContext('2d');
+            if (revenueProfitChartInstance) revenueProfitChartInstance.destroy();
+
+            const gradientRevenue = ctx.createLinearGradient(0, 0, 0, 400);
+            gradientRevenue.addColorStop(0, 'rgba(74, 222, 128, 0.5)');
+            gradientRevenue.addColorStop(1, 'rgba(74, 222, 128, 0)');
+            
+            const gradientProfit = ctx.createLinearGradient(0, 0, 0, 400);
+            gradientProfit.addColorStop(0, 'rgba(221, 107, 32, 0.5)');
+            gradientProfit.addColorStop(1, 'rgba(221, 107, 32, 0)');
+
+            revenueProfitChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Príjem', 'Náklady', 'Zisk'],
+                    datasets: [
+                    {
+                        label: 'Príjem',
+                        data: [annualRevenue, null, null],
+                        borderColor: '#4ade80',
+                        backgroundColor: gradientRevenue,
+                        pointBackgroundColor: '#4ade80',
+                        pointBorderColor: '#fff',
+                        pointHoverRadius: 7,
+                        pointRadius: 5,
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3
+                    },
+                    {
+                        label: 'Zisk',
+                        data: [null, null, annualProfit],
+                        borderColor: '#dd6b20',
+                        backgroundColor: gradientProfit,
+                        pointBackgroundColor: '#dd6b20',
+                        pointBorderColor: '#fff',
+                        pointHoverRadius: 7,
+                        pointRadius: 5,
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3
+                    },
+                    {
+                        label: 'Náklady',
+                        data: [null, annualOperatingCost, null],
+                        borderColor: '#f87171',
+                        pointBackgroundColor: '#f87171',
+                        pointBorderColor: '#fff',
+                        pointHoverRadius: 7,
+                        pointRadius: 5,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        borderDash: [5, 5]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#2d3748' } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: true, position: 'top', labels: { boxWidth: 12, padding: 20 } },
+                        tooltip: {
+                            backgroundColor: '#1a202c',
+                            titleColor: '#f6ad55',
+                            bodyColor: '#e2e8f0',
+                            padding: 12,
+                            cornerRadius: 8,
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                }
+            });
+        }
+
+        function renderTenYearForecastChart(years, revenues, profits) {
+            const ctx = document.getElementById('tenYearForecastChart').getContext('2d');
+            if (tenYearForecastChartInstance) tenYearForecastChartInstance.destroy();
+
+            tenYearForecastChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Ročný príjem',
+                        data: revenues,
+                        backgroundColor: 'rgba(74, 222, 128, 0.5)',
+                        borderColor: 'rgba(74, 222, 128, 1)',
+                        borderWidth: 1,
+                        order: 2,
+                        borderRadius: 4,
+                    }, {
+                        label: 'Ročný zisk',
+                        data: profits,
+                        type: 'line',
+                        borderColor: 'var(--accent-primary)',
+                        backgroundColor: 'rgba(221, 107, 32, 0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: 'var(--accent-secondary)',
+                        pointBorderColor: 'var(--bg-card)',
+                        pointHoverRadius: 7,
+                        pointRadius: 5,
+                        order: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'var(--border-color)' },
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('sk-SK') + ' €';
+                                }
+                            }
+                        },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: true, position: 'top', labels: { boxWidth: 12, padding: 20 } },
+                        tooltip: {
+                            backgroundColor: 'var(--bg-dark)',
+                            titleColor: 'var(--accent-secondary)',
+                            bodyColor: 'var(--text-primary)',
+                            padding: 12,
+                            cornerRadius: 8,
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                }
+            });
+        }
+
+        // Finančná kalkulačka
+        document.getElementById('calculateBtn').addEventListener('click', () => {
+            const numUnits = 1;
+            const costPerUnit = parseFloat(document.getElementById('costPerUnit').value) || 0;
+            const landCost = parseFloat(document.getElementById('landCost').value) || 0;
+            const utilitiesCost = parseFloat(document.getElementById('utilitiesCost').value) || 0;
+            const interiorExteriorCost = parseFloat(document.getElementById('interiorExteriorCost').value) || 0;
+            const marketingAdminCost = parseFloat(document.getElementById('marketingAdminCost').value) || 0;
+            const pricePerNight = parseFloat(document.getElementById('pricePerNight').value) || 0;
+            const occupancyRate = (parseFloat(document.getElementById('occupancyRate').value) || 0) / 100;
+            const monthlyOperatingCost = parseFloat(document.getElementById('monthlyOperatingCost').value) || 0;
+
+            const totalInvestment = (numUnits * costPerUnit) + landCost + utilitiesCost + (numUnits * interiorExteriorCost) + marketingAdminCost;
+            renderInvestmentChart([landCost, costPerUnit, utilitiesCost, interiorExteriorCost, marketingAdminCost]);
+            
+            const annualRevenue = numUnits * pricePerNight * 365 * occupancyRate;
+            const annualOperatingCost = monthlyOperatingCost * 12;
+            const annualProfit = annualRevenue - annualOperatingCost;
+            renderRevenueProfitChart(annualRevenue, annualOperatingCost, annualProfit);
+
+            let paybackPeriod = 'N/A';
+            if (annualProfit > 0) {
+                paybackPeriod = (totalInvestment / annualProfit).toFixed(2);
+            }
+
+            // 10-ročná projekcia
+            const years = [];
+            const annualRevenues = [];
+            const annualProfits = [];
+            let cumulativeProfit = 0;
+
+            for (let i = 1; i <= 10; i++) {
+                years.push(`Rok ${i}`);
+                // Pre zjednodušenie predpokladáme statické príjmy a zisky
+                annualRevenues.push(annualRevenue);
+                annualProfits.push(annualProfit);
+                cumulativeProfit += annualProfit;
+            }
+
+            renderTenYearForecastChart(years, annualRevenues, annualProfits);
+
+            // Zobrazenie výsledkov
+            document.getElementById('totalInvestment').textContent = totalInvestment.toLocaleString('sk-SK', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 });
+            document.getElementById('annualRevenue').textContent = annualRevenue.toLocaleString('sk-SK', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 });
+            document.getElementById('annualProfit').textContent = annualProfit.toLocaleString('sk-SK', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 });
+            document.getElementById('paybackPeriod').textContent = paybackPeriod;
+            document.getElementById('tenYearProfit').textContent = cumulativeProfit.toLocaleString('sk-SK', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 });
+
+
+            document.getElementById('results').classList.remove('hidden');
+        });
+
+        // Initial render of charts with default values
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('calculateBtn').click();
+            // Otvorí prvú sekciu v každej karte pri načítaní
+            document.querySelectorAll('.card').forEach(card => {
+                const firstHeader = card.querySelector('.collapsible-header');
+                if (firstHeader) {
+                    firstHeader.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
