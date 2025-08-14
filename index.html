@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="sk">
 <head>
     <meta charset="UTF-8">
@@ -78,17 +79,7 @@
         .collapsible-header.open .arrow-icon {
             transform: rotate(90deg);
         }
-        .sticky-nav {
-            position: sticky;
-            top: 1.5rem;
-            align-self: flex-start;
-            max-height: calc(100vh - 3rem);
-            overflow-y: auto;
-            background-color: var(--bg-card);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-        }
+        
         .nav-link {
             display: block;
             padding: 0.75rem 1rem;
@@ -327,24 +318,34 @@
 </head>
 <body class="text-gray-200">
     <div class="container mx-auto p-4 sm:p-6 lg:p-8 flex flex-col lg:flex-row gap-8">
-        <!-- Navigácia (Sticky Sidebar) -->
-        <nav class="w-full lg:w-1/4 sticky-nav">
-            <h2 class="section-title !text-2xl !pb-2 !mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-svg text-accent-primary"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m13 14-4-4 6-6"></path></svg>
-                Obsah
-            </h2>
-            <ul>
-                <li><a href="#uvod" class="nav-link" data-section="uvod">1. Úvod a Zhrnutie</a></li>
-                <li><a href="#koncept" class="nav-link" data-section="koncept">2. Koncept Ubytovania</a></li>
-                <li><a href="#lokalita" class="nav-link" data-section="lokalita">3. Lokalita a Pozemok</a></li>
-                <li><a href="#realizacia" class="nav-link" data-section="realizacia">4. Realizácia Zariadenia</a></li>
-                <li><a href="#povolenia" class="nav-link" data-section="povolenia">5. Povolenia a Právo</a></li>
-                <li><a href="#marketing" class="nav-link" data-section="marketing">6. Marketing a Predaj</a></li>
-                <li><a href="#casova-os" class="nav-link" data-section="casova-os">7. Časová Os</a></li>
-                <li><a href="#financna-analyza" class="nav-link" data-section="financna-analyza">8. Finančná Analýza</a></li>
-                <li><a href="#zavery" class="nav-link" data-section="zavery">9. Závery a Odporúčania</a></li>
-            </ul>
-        </nav>
+        
+        <!-- Navigácia (Sticky Sidebar on Desktop, Collapsible on Mobile) -->
+        <aside class="w-full lg:w-1/4 lg:sticky lg:top-8 lg:self-start mb-8 lg:mb-0">
+            <div class="bg-bg-card rounded-2xl border border-border-color p-4 sm:p-6">
+                <div id="nav-header" class="flex justify-between items-center cursor-pointer lg:cursor-auto">
+                    <h2 class="section-title !text-2xl !pb-0 !mb-0 !border-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-svg text-accent-primary"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m13 14-4-4 6-6"></path></svg>
+                        Obsah
+                    </h2>
+                    <svg id="nav-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-accent-secondary transition-transform duration-300 lg:hidden">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div id="nav-content" class="overflow-hidden transition-all duration-500 ease-in-out">
+                    <ul class="mt-4 border-t border-border-color pt-4 lg:border-none lg:pt-0">
+                        <li><a href="#uvod" class="nav-link" data-section="uvod">1. Úvod a Zhrnutie</a></li>
+                        <li><a href="#koncept" class="nav-link" data-section="koncept">2. Koncept Ubytovania</a></li>
+                        <li><a href="#lokalita" class="nav-link" data-section="lokalita">3. Lokalita a Pozemok</a></li>
+                        <li><a href="#realizacia" class="nav-link" data-section="realizacia">4. Realizácia Zariadenia</a></li>
+                        <li><a href="#povolenia" class="nav-link" data-section="povolenia">5. Povolenia a Právo</a></li>
+                        <li><a href="#marketing" class="nav-link" data-section="marketing">6. Marketing a Predaj</a></li>
+                        <li><a href="#casova-os" class="nav-link" data-section="casova-os">7. Časová Os</a></li>
+                        <li><a href="#financna-analyza" class="nav-link" data-section="financna-analyza">8. Finančná Analýza</a></li>
+                        <li><a href="#zavery" class="nav-link" data-section="zavery">9. Závery a Odporúčania</a></li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
 
         <!-- Hlavný obsah -->
         <main class="w-full lg:w-3/4">
@@ -1236,7 +1237,7 @@
     </footer>
 
     <script>
-        // Funkcia pre prepínanie kolapsibilných sekcií
+        // Funkcia pre prepínanie kolapsibilných sekcií v hlavnom obsahu
         document.querySelectorAll('.collapsible-header').forEach(header => {
             header.addEventListener('click', () => {
                 const content = header.nextElementSibling;
@@ -1275,6 +1276,52 @@
         sections.forEach(section => {
             observer.observe(section);
         });
+        
+        // --- Nová funkčnosť pre mobilnú navigáciu ---
+        const navHeader = document.getElementById('nav-header');
+        const navContent = document.getElementById('nav-content');
+        const navToggleIcon = document.getElementById('nav-toggle-icon');
+
+        const checkAndSetNav = () => {
+            if (window.innerWidth < 1024) { // lg breakpoint in Tailwind
+                // Na mobile je menu štandardne zatvorené
+                navContent.style.maxHeight = '0px';
+                navToggleIcon.classList.remove('rotate-180');
+            } else {
+                // Na desktope je menu vždy otvorené
+                navContent.style.maxHeight = navContent.scrollHeight + 'px';
+                navToggleIcon.classList.remove('rotate-180');
+            }
+        };
+
+        navHeader.addEventListener('click', () => {
+            if (window.innerWidth < 1024) { // Prepínač funguje len na mobile
+                const isCollapsed = navContent.style.maxHeight === '0px';
+                if (isCollapsed) {
+                    navContent.style.maxHeight = navContent.scrollHeight + 'px';
+                    navToggleIcon.classList.add('rotate-180');
+                } else {
+                    navContent.style.maxHeight = '0px';
+                    navToggleIcon.classList.remove('rotate-180');
+                }
+            }
+        });
+        
+        // Kliknutie na odkaz v mobilnom menu ho zatvorí
+        navContent.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 1024) {
+                    navContent.style.maxHeight = '0px';
+                    navToggleIcon.classList.remove('rotate-180');
+                }
+            });
+        });
+
+        // Upraviť stav menu pri zmene veľkosti okna
+        window.addEventListener('resize', () => {
+            setTimeout(checkAndSetNav, 150); // Malé oneskorenie pre stabilizáciu layoutu
+        });
+
 
         // Chart.js instances
         let investmentChartInstance = null;
@@ -1531,9 +1578,10 @@
             document.getElementById('results').classList.remove('hidden');
         });
 
-        // Initial render of charts with default values
+        // Počiatočné nastavenie pri načítaní stránky
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('calculateBtn').click();
+            checkAndSetNav(); // Nastaví mobilnú navigáciu
+            document.getElementById('calculateBtn').click(); // Spustí kalkulačku s predvolenými hodnotami
             // Otvorí prvú sekciu v každej karte pri načítaní
             document.querySelectorAll('.card').forEach(card => {
                 const firstHeader = card.querySelector('.collapsible-header');
